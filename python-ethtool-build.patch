@@ -1,0 +1,12 @@
+diff -urN python-ethtool-0.12.org/setup.py python-ethtool-0.12/setup.py
+--- python-ethtool-0.12.org/setup.py	2016-08-15 11:57:39.000000000 +0200
++++ python-ethtool-0.12/setup.py	2017-01-23 11:23:29.595230644 +0100
+@@ -9,7 +9,7 @@
+     import subprocess as commands
+ import sys
+ 
+-version = '0.10'
++version = '0.12'
+ 
+ def pkgconfig(pkg):
+     def _str2list(pkgstr, onlystr):

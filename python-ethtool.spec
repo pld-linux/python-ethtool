@@ -6,12 +6,13 @@
 Summary:	Python 2 bindings to Ethernet settings
 Summary(pl.UTF-8):	Wiązania Pythona 2 do ustawień sieci Ethernet
 Name:		python-ethtool
-Version:	0.11
-Release:	4
+Version:	0.12
+Release:	1
 License:	GPL v2
 Group:		Libraries/Python
 Source0:	https://fedorahosted.org/releases/p/y/python-ethtool/%{name}-%{version}.tar.bz2
-# Source0-md5:	b505501d928debf69664b72fafa9d0c3
+# Source0-md5:	8089d72c9dbe0570bc2aa6ecd59e026f
+Patch0:		%{name}-build.patch
 URL:		https://fedorahosted.org/python-ethtool/
 BuildRequires:	asciidoc
 BuildRequires:	libnl-devel >= 3.2
@@ -52,6 +53,7 @@ port, autonegocjacja oraz lokalizacja PCI.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %if %{with python2}
