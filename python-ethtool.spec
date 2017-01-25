@@ -16,14 +16,17 @@ Patch0:		%{name}-build.patch
 URL:		https://fedorahosted.org/python-ethtool/
 BuildRequires:	asciidoc
 BuildRequires:	libnl-devel >= 3.2
+BuildRequires:	pkgconfig
+%if %{with python2}
 BuildRequires:	python-devel >= 2
 BuildRequires:	python-modules >= 2
-BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.710
+%endif
 %if %{with python3}
 BuildRequires:	python3-devel >= 1:3.2
 BuildRequires:	python3-modules >= 1:3.2
 %endif
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -69,13 +72,14 @@ a2x -d manpage -f manpage man/pifconfig.8.asciidoc
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sbindir}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8}
 
 %if %{with python2}
 %py_install
 
 cp -p pethtool.py $RPM_BUILD_ROOT%{_sbindir}/pethtool
 cp -p pifconfig.py $RPM_BUILD_ROOT%{_sbindir}/pifconfig
+cp -p man/{pethtool,pifconfig}.8 $RPM_BUILD_ROOT%{_mandir}/man8
 %endif
 
 %if %{with python3}
@@ -94,6 +98,8 @@ rm -rf $RPM_BUILD_ROOT
 %if "%{py_ver}" > "2.4"
 %{py_sitedir}/ethtool-%{version}-py*.egg-info
 %endif
+%{_mandir}/man8/pethtool.8*
+%{_mandir}/man8/pifconfig.8*
 %endif
 
 %if %{with python3}
