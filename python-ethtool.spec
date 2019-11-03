@@ -6,14 +6,13 @@
 Summary:	Python 2 bindings to Ethernet settings
 Summary(pl.UTF-8):	Wiązania Pythona 2 do ustawień sieci Ethernet
 Name:		python-ethtool
-Version:	0.12
-Release:	3
+Version:	0.14
+Release:	1
 License:	GPL v2
 Group:		Libraries/Python
-Source0:	https://fedorahosted.org/releases/p/y/python-ethtool/%{name}-%{version}.tar.bz2
-# Source0-md5:	8089d72c9dbe0570bc2aa6ecd59e026f
-Patch0:		%{name}-build.patch
-URL:		https://fedorahosted.org/python-ethtool/
+Source0:	https://github.com/fedora-python/python-ethtool/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	eaf26f7aedbb1c6e3f7e0b00787b552e
+URL:		https://github.com/fedora-python/python-ethtool
 BuildRequires:	asciidoc
 BuildRequires:	libnl-devel >= 3.2
 BuildRequires:	pkgconfig
@@ -56,7 +55,6 @@ port, autonegocjacja oraz lokalizacja PCI.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %if %{with python2}
@@ -77,14 +75,17 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8}
 %if %{with python2}
 %py_install
 
-cp -p pethtool.py $RPM_BUILD_ROOT%{_sbindir}/pethtool
-cp -p pifconfig.py $RPM_BUILD_ROOT%{_sbindir}/pifconfig
-cp -p man/{pethtool,pifconfig}.8 $RPM_BUILD_ROOT%{_mandir}/man8
+%{__mv} $RPM_BUILD_ROOT{%{_bindir}/pethtool,%{_sbindir}/pethtool2}
+%{__mv} $RPM_BUILD_ROOT{%{_bindir}/pifconfig,%{_sbindir}/pifconfig2}
 %endif
 
 %if %{with python3}
 %py3_install
+%{__mv} $RPM_BUILD_ROOT{%{_bindir},%{_sbindir}}/pethtool
+%{__mv} $RPM_BUILD_ROOT{%{_bindir},%{_sbindir}}/pifconfig
 %endif
+
+cp -p man/{pethtool,pifconfig}.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -92,19 +93,19 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_sbindir}/pethtool
-%attr(755,root,root) %{_sbindir}/pifconfig
-%attr(755,root,root) %{py_sitedir}/ethtool.so
-%if "%{py_ver}" > "2.4"
+%attr(755,root,root) %{_sbindir}/pethtool2
+%attr(755,root,root) %{_sbindir}/pifconfig2
 %{py_sitedir}/ethtool-%{version}-py*.egg-info
-%endif
-%{_mandir}/man8/pethtool.8*
-%{_mandir}/man8/pifconfig.8*
+%attr(755,root,root) %{py_sitedir}/ethtool.so
 %endif
 
 %if %{with python3}
 %files -n python3-ethtool
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_sbindir}/pethtool
+%attr(755,root,root) %{_sbindir}/pifconfig
 %attr(755,root,root) %{py3_sitedir}/ethtool.cpython-*.so
 %{py3_sitedir}/ethtool-%{version}-py*.egg-info
+%{_mandir}/man8/pethtool.8*
+%{_mandir}/man8/pifconfig.8*
 %endif
