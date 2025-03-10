@@ -7,7 +7,7 @@ Summary:	Python 2 bindings to Ethernet settings
 Summary(pl.UTF-8):	Wiązania Pythona 2 do ustawień sieci Ethernet
 Name:		python-ethtool
 Version:	0.14
-Release:	6
+Release:	7
 License:	GPL v2
 Group:		Libraries/Python
 Source0:	https://github.com/fedora-python/python-ethtool/archive/v%{version}/%{name}-%{version}.tar.gz
